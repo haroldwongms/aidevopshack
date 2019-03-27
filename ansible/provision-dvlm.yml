@@ -104,9 +104,11 @@
     debug:
       msg: "FQDN: {{ output.ansible_facts.azure_publicipaddresses[0].properties.dnsSettings.fqdn }}"
 
-- name: Print SSH Warning
+  - name: Print SSH Warning
+    vars:
+      msg: |
+           You will likely need to add the following to your $HOME/.ssh/config file
+           Host *
+              IPQos=throughput
     debug:
-      msg:
-        - "You will likely need to add the following to your $HOME/.ssh/config file:"
-        - "Host *"
-        - "    IPQos=throughput"
+      msg: "{{ msg.split('\n') }}"

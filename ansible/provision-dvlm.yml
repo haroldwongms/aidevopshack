@@ -63,11 +63,16 @@
     azure_rm_networkinterface:
       name: "{{ vm_name }}-nic"
       os_type: Linux
-      public_ip_address_name: "{{ vm_name }}-pip"
       resource_group: "{{ resource_group }}"
       security_group_name: "{{ vm_name }}-nsg"
       subnet_name: "{{ vm_name }}-subnet"
-      virtual_network_name: "{{ vm_name }}-vnet"
+      virtual_network: "{{ vm_name }}-vnet"
+      ip_configurations:
+        - name: ipconfig1
+          primary: True
+          public_ip_address_name: "{{ vm_name }}-pip"
+          public_ip_allocation_method: Dynamic
+          private_ip_allocation_method: Dynamic
 
   - name: Create Deep Learning VM
     azure_rm_virtualmachine:

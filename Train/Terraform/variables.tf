@@ -10,7 +10,7 @@ variable "location" {
 
 variable "vm_size" {
     description = "Size of the VM"
-    default = "Standard_NC6"
+    default = "Standard_D4_v2"
 }
 
 variable "prefix" {
@@ -31,4 +31,6 @@ variable "log_analytics_retention_days" {
     description = "Log analytics workspace retention days."
     default = "30"
 }
+
+
 

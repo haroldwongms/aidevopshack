@@ -1,5 +1,2 @@
-export pkl_location = 'ds_artifacts/fake.pkl'
-
-- numpy
-- sklearn
-- pickle
+numpy
+sklearn

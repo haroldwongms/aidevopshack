@@ -1,1 +1,3 @@
-empty requirements file
+export pkl_location = 'ds_artifacts/fake.pkl'
+
+- numpy

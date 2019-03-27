@@ -37,6 +37,7 @@ resource "azuread_service_principal_password" "example" {
   end_date = "2020-01-01T01:02:03Z"
 }
 
+
 resource "azurerm_kubernetes_cluster" "example" {
   name = "${var.prefix}-aks"
   location = "${azurerm_resource_group.example.location}"
@@ -51,11 +52,20 @@ resource "azurerm_kubernetes_cluster" "example" {
   }
 
   service_principal {
-    client_id = "${azuread_service_principal.example.id}"
+    client_id = "${azuread_application.example.application_id}"
     client_secret = "${azuread_service_principal_password.example.value}"
   }
 
   tags = {
     Environment = "Production"
   }
+}
+
+
+resource "azurerm_container_registry" "acr" {
+  name                     = "${var.prefix}containerregistry"
+  resource_group_name      = "${azurerm_resource_group.example.name}"
+  location                 = "${azurerm_resource_group.example.location}"
+  sku                      = "Basic"
+  admin_enabled            = false
 }

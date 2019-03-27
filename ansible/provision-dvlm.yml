@@ -1,0 +1,119 @@
+- name: Deploy Deep Learning VM
+  hosts: localhost
+  connection: local
+
+  vars:
+    resource_group: aihack3
+    location: eastus
+    vm_name: aihack
+    admin_username: aihack
+    azurevm_size: Standard_NC6
+
+  tasks:
+  - name: Make sure Deep Learning VM Resource Group Exists
+    azure_rm_resourcegroup:
+      name: "{{ resource_group }}"
+      location: "{{ location }}"
+
+  - name: Create Deep Learning VM VNet
+    azure_rm_virtualnetwork:
+      resource_group: "{{ resource_group }}"
+      name: "{{ vm_name }}-vnet"
+      address_prefixes: "10.10.0.0/16"
+
+  - name: Create Deep Learning VM Subnet
+    azure_rm_subnet:
+      resource_group: "{{ resource_group }}"
+      name: "{{ vm_name }}-subnet"
+      address_prefix: "10.10.0.0/24"
+      virtual_network: "{{ vm_name }}-vnet"
+
+  - name: Create Deep Learning VM Public IP Address
+    azure_rm_publicipaddress:
+      resource_group: "{{ resource_group }}"
+      name: "{{ vm_name }}-pip"
+      allocation_method: Static
+      domain_name: "{{ vm_name }}-{{ lookup('env', 'USER') }}"
+
+  - name: Create Deep Learning VM NSG
+    azure_rm_securitygroup:
+      resource_group: "{{ resource_group }}"
+      name: "{{ vm_name }}-nsg"
+      rules:
+          - name: "AllowSSH"
+            access: Allow
+            destination_port_range: 22
+            direction: Inbound
+            priority: 1010
+            protocol: Tcp
+          - name: "AllowJupyterHub"
+            access: Allow
+            destination_port_range: 8000
+            direction: Inbound
+            priority: 1011
+            protocol: Tcp
+          - name: "AllowRStudioServer"
+            access: Allow
+            destination_port_range: 8787
+            direction: Inbound
+            priority: 1012
+            protocol: Tcp
+
+  - name: Create Deep Learning VM NIC
+    azure_rm_networkinterface:
+      name: "{{ vm_name }}-nic"
+      os_type: Linux
+      resource_group: "{{ resource_group }}"
+      security_group_name: "{{ vm_name }}-nsg"
+      subnet_name: "{{ vm_name }}-subnet"
+      virtual_network: "{{ vm_name }}-vnet"
+      ip_configurations:
+        - name: ipconfig1
+          primary: True
+          public_ip_address_name: "{{ vm_name }}-pip"
+          public_ip_allocation_method: Dynamic
+          private_ip_allocation_method: Dynamic
+
+  - name: Create Deep Learning VM
+    azure_rm_virtualmachine:
+      admin_username: "{{ admin_username }}"
+      location: "{{ location }}"
+      managed_disk_type: Standard_LRS
+      name: "{{ vm_name }}"
+      network_interface_names: "{{ vm_name }}-nic"
+      os_type: Linux
+      resource_group: "{{ resource_group }}"
+      short_hostname: "{{ vm_name }}"
+      vm_size: "{{ azurevm_size }}"
+      ssh_password_enabled: false
+      ssh_public_keys:
+        - path: /home/{{ admin_username }}/.ssh/authorized_keys
+          key_data: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+      image:
+        offer: linux-data-science-vm-ubuntu
+        publisher: microsoft-ads
+        sku: linuxdsvmubuntu
+        version: 19.01.03
+      plan:
+        name: linuxdsvmubuntu
+        product: linux-data-science-vm-ubuntu
+        publisher: microsoft-ads
+
+  - name: Getting Public FQDN address of Deep Learning VM
+    azure_rm_publicipaddress_facts:
+      resource_group: "{{ resource_group }}"
+      name: "{{ vm_name }}-pip"
+    register: output
+
+  - name: Dump Deep Learning VM FQDN
+    debug:
+      msg: "FQDN: {{ output.ansible_facts.azure_publicipaddresses[0].properties.dnsSettings.fqdn }}"
+
+  - name: Print SSH Warning
+    vars:
+      msg: |
+           You will likely need to add the following to your $HOME/.ssh/config file
+           Host *
+              IPQos=throughput
+    debug:
+      msg: "{{ msg.split('\n') }}"

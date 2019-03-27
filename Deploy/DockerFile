@@ -1,0 +1,14 @@
+FROM continuumio/minconda3
+
+COPY ./ds_artifacts/* .
+
+COPY ./Deploy/app.py .
+
+RUN pip install -r ./ds_artifacts/requirements.txt
+
+RUN pip install flask
+
+EXPOSE 80
+
+CMD python ./Deploy/app.py
+

@@ -2,7 +2,7 @@ FROM continuumio/miniconda3
 
 COPY . .
 
-RUN pip install -r ./ds_artifacts/requirements.txt
+RUN pip install -r ds_artifacts/requirements.txt
 
 RUN pip install flask
 

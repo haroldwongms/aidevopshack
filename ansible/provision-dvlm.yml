@@ -2,13 +2,6 @@
   hosts: localhost
   connection: local
 
-  vars:
-    resource_group: aihack3
-    location: eastus
-    vm_name: aihack
-    admin_username: aihack
-    azurevm_size: Standard_NC6
-
   tasks:
   - name: Make sure Deep Learning VM Resource Group Exists
     azure_rm_resourcegroup:
@@ -84,7 +77,7 @@
       os_type: Linux
       resource_group: "{{ resource_group }}"
       short_hostname: "{{ vm_name }}"
-      vm_size: "{{ azurevm_size }}"
+      vm_size: "{{ dlvm_size }}"
       ssh_password_enabled: false
       ssh_public_keys:
         - path: /home/{{ admin_username }}/.ssh/authorized_keys

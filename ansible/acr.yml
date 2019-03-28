@@ -1,0 +1,32 @@
+- name: Deploy ACR for AIHACK
+  hosts: localhost
+  connection: local
+
+  tasks:
+
+  - name: Make sure Deep Learning VM Resource Group Exists
+    azure_rm_resourcegroup:
+      name: "{{ resource_group }}"
+      location: "{{ location }}"
+
+  - name: Create an Azure Container Registry
+    azure_rm_containerregistry:
+      name: "{{ vm_name }}acr{{ lookup('env', 'USER') }}"
+      location: "{{ location }}"
+      resource_group: "{{ resource_group }}"
+      state: present
+      admin_user_enabled: true
+      sku: Basic
+
+  - name: Getting ACR Facts
+    azure_rm_containerregistry_facts:
+      resource_group: "{{ resource_group }}"
+      name: "{{ vm_name }}acr{{ lookup('env', 'USER') }}"
+    register: output
+
+#  - name: Dump Deep Learning VM FQDN
+#    debug:
+#      #msg: "FQDN: {{ output.ansible_facts.azure_publicipaddresses[0].properties.dnsSettings.fqdn }}"
+#      msg: "Cluster: {{ output.ansible_facts.azure_publicipaddresses[0].properties.dnsSettings.fqdn }}"
+
+

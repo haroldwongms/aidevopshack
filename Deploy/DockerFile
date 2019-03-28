@@ -1,6 +1,6 @@
 FROM continuumio/miniconda3
 
-COPY ./ds_artifacts/* ./
+COPY ../ds_artifacts/* ./
 
 COPY ./Deploy/app.py ./
 

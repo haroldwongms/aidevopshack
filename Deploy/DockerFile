@@ -1,14 +1,13 @@
-FROM continuumio/minconda3
+FROM continuumio/miniconda3
 
-COPY ./ds_artifacts/* .
+COPY ./ds_artifacts/* ./
 
-COPY ./Deploy/app.py .
+COPY ./Deploy/app.py ./
 
-RUN pip install -r ./ds_artifacts/requirements.txt
+RUN pip install -r requirements.txt
 
 RUN pip install flask
 
-EXPOSE 80
+EXPOSE 5000
 
 CMD [ "python", "./app.py" ]
-

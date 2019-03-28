@@ -33,4 +33,11 @@ variable "log_analytics_retention_days" {
 }
 
 
+variable "password" {
+  description = "User password"
+}
 
+variable "username" {
+  description = "User name"
+
+}

@@ -17,16 +17,10 @@
       state: present
       admin_user_enabled: true
       sku: Basic
-
-  - name: Getting ACR Facts
-    azure_rm_containerregistry_facts:
-      resource_group: "{{ resource_group }}"
-      name: "{{ vm_name }}acr{{ lookup('env', 'USER') }}"
     register: output
 
-#  - name: Dump Deep Learning VM FQDN
-#    debug:
-#      #msg: "FQDN: {{ output.ansible_facts.azure_publicipaddresses[0].properties.dnsSettings.fqdn }}"
-#      msg: "Cluster: {{ output.ansible_facts.azure_publicipaddresses[0].properties.dnsSettings.fqdn }}"
+  - debug:
+      msg: "YOUR ACR USERNAME IS: {{ output['name'] }}"
 
-
+  - debug:
+      msg: "YOUR ACR PASSWORD IS: {{ output['credentials']['password'] }}"

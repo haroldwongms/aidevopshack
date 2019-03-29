@@ -1,7 +1,6 @@
 ---
 # Multiple Playbooks
 resource_group: aihack4
-admin_username: student
 location: eastus
 vm_name: aihack
 admin_username: aihack

@@ -1,0 +1,57 @@
+- name: Determine IP address of provisioned DLVM
+  hosts: localhost
+  connection: local
+  tasks:
+
+    - name: Getting Public IP address of Deep Learning VM
+      azure_rm_publicipaddress_facts:
+        resource_group: "{{ resource_group }}"
+        name: "{{ vm_name }}-pip"
+      register: output
+
+    - name: Adding Public IP to Ansible host group
+      add_host:
+        hostname: "{{ output.ansible_facts.azure_publicipaddresses[0].properties.ipAddress }}"
+        groups: ado-dlvm
+
+    - name: Setting Public IP variable
+      set_fact:
+        dlvm_ip: "{{ output.ansible_facts.azure_publicipaddresses[0].properties.ipAddress }}"  
+
+- name: Run train.py and create PKL file using provisioned DLVM 
+  hosts: ado-dlvm
+  remote_user: "{{ admin_username }}"
+  become: yes  
+  tasks:
+
+    - name: Create git clone directory
+      file:
+        path: "/home/{{ admin_username }}/repo"
+        state: directory
+
+    - name: Clone git repository
+      git:
+        repo: "{{ git_repo }}"
+        dest: "/home/{{ admin_username }}/repo"
+        clone: yes
+        force: yes
+
+    - name: Run train.py script to generate PKL file
+      command: "/data/anaconda/envs/py35/bin/python ds_artifacts/train.py" 
+      args:
+        chdir: "/home/{{ admin_username }}/repo"
+
+- name: Copy generated PKL files from DLVM to local directory in ADO
+  hosts: localhost
+  connection: local
+  tasks:
+
+    - name: Create directory 'pkl-output' for resulting PKL files to be copied 
+      file:
+        path: "/home/{{ lookup('env', 'USER') }}/pkl-output"
+        state: directory
+        owner: "{{ lookup('env', 'USER') }}"
+        group: "{{ lookup('env', 'USER') }}"
+
+    - name: "Copying all PKL files generated on DLVM to the output directory 'pkl-output'"
+      command: "scp -v {{ admin_username }}@{{ dlvm_ip }}:/home/{{ admin_username }}/repo/ds_artifacts/*.pkl /home/{{ lookup('env', 'USER') }}/pkl-output"

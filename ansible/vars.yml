@@ -7,4 +7,5 @@ admin_username: aihack
 dlvm_size: Standard_NC6
 k8s_vm_size: Standard_D2_v2
 k8s_vm_count: 3
-
+python_interpreter: /data/anaconda/envs/py35/bin/python
+git_repo: https://github.com/haroldwongms/aidevopshack

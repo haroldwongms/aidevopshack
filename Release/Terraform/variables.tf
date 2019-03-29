@@ -35,9 +35,10 @@ variable "log_analytics_retention_days" {
 
 variable "password" {
   description = "User password"
+  default="Password1234!"
 }
 
 variable "username" {
   description = "User name"
-
+  default="aidevops"
 }

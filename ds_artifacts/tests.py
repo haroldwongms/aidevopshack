@@ -26,5 +26,3 @@ def test_accuracy_is_greater_than_eighty_percent():
 
         assert (score > .8)
 
-def test_fail():
-        assert 1 == 2

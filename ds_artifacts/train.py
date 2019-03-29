@@ -11,7 +11,7 @@ X, y = iris['data'], iris['target']
 
 # for simplicity's sake, just using the test set as the val set. not best practice
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
-np.savez('val_set.npz', X=X_test, y=y_test)
+np.savez('ds_artifacts/val_set.npz', X=X_test, y=y_test)
 
 clf.fit(X, y)  
 

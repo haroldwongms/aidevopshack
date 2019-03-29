@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export WORKING_DIR=$WORKING_DIR
+
 ## Install pre-requisite packages
 sudo apt-get remove --purge ansible
 sudo apt-get install -y python-setuptools

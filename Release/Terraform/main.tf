@@ -2,7 +2,23 @@ locals {
   
 }
 
+provider "azuread" {
+  # Whilst version is optional, we /strongly recommend/ using it to pin the version of the Provider being used
+ 
+  subscription_id = "${var.ARM_SUBSCRIPTION_ID}"
+  client_id       = "${var.ARM_CLIENT_ID}"
+  client_secret   = "${var.ARM_CLIENT_SECRET}"
+  tenant_id       = "${var.ARM_TENANT_ID}"
+}
 
+provider "azurerm" {
+  # Whilst version is optional, we /strongly recommend/ using it to pin the version of the Provider being used
+ 
+  subscription_id = "${var.ARM_SUBSCRIPTION_ID}"
+  client_id       = "${var.ARM_CLIENT_ID}"
+  client_secret   = "${var.ARM_CLIENT_SECRET}"
+  tenant_id       = "${var.ARM_TENANT_ID}"
+}
 
 resource "azurerm_resource_group" "example" {
   name     = "${var.resource_group_name}"
@@ -53,8 +69,8 @@ resource "azurerm_kubernetes_cluster" "example" {
   }
 
   service_principal {
-    client_id = "${azuread_application.example.application_id}"
-    client_secret = "${azuread_service_principal_password.example.value}"
+    client_id = "${var.ARM_CLIENT_ID}"
+    client_secret = "${var.ARM_CLIENT_SECRET}"
   }
 
   tags = {

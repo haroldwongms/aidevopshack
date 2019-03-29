@@ -18,10 +18,10 @@ def test_pkl_file_loads():
         pytest.fail(e)
 
 def test_accuracy_is_greater_than_eighty_percent():
-    val_data = np.load('./ds_artifacts/val_set.npz')
-    X_val = val_data['X']
-    y_val = val_data['y']
+        with np.load('./ds_artifacts/val_set.npz') as val_data:
+                X_val = val_data['X']
+                y_val = val_data['y']
 
-    score = model.score(X_val, y_val)
+        score = model.score(X_val, y_val)
 
-    assert (score > .8)
+        assert (score > .8)

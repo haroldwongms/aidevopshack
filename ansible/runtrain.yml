@@ -65,15 +65,15 @@
     - name: "Committing all PKL files to GitHub repository"
       command: "git commit -m 'PKL files generated {{ datestamp }}'"
       args:
-        chdir: "{{ lookup('env', 'WORKING_DIR') }}
+        chdir: "{{ lookup('env', 'WORKING_DIR') }}"
 
     - name: "Setting GitHub credentials"
       command: "git remote set-url origin https://{{ git_user }}:{{ git_token }}@github.com/{{ git_user }}/aidevopshack"
       args:
-        chdir: "{{ lookup('env', 'WORKING_DIR') }}
+        chdir: "{{ lookup('env', 'WORKING_DIR') }}"
 
     - name: "Pushing PKL files to GitHub repository"
-      command: "git push origin master
+      command: "git push origin master"
       args:
         chdir: "{{ lookup('env', 'WORKING_DIR') }}"
 

@@ -69,7 +69,7 @@ resource "azurerm_kubernetes_cluster" "example" {
   }
 
   service_principal {
-    client_id = "${var.ARM_CLIENT_ID}"
+    client_id = "${var.client_id}"
     client_secret = "${var.ARM_CLIENT_SECRET}"
   }
 

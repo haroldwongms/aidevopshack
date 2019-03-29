@@ -37,6 +37,27 @@ variable "password" {
   description = "User password"
 }
 
+variable "ARM_SUBSCRIPTION_ID" {
+  description = "The Azure subscription ID."
+}
+
+variable "ARM_CLIENT_ID" {
+  description = "The Azure Service Principal app ID."
+}
+
+variable "ARM_CLIENT_SECRET" {
+  description = "The Azure Service Principal password."
+}
+
+variable "ARM_TENANT_ID" {
+  description = "The Azure Tenant ID."
+}
+
+variable "AZURE_REGION" {
+  description = "The Azure region to create things in."
+  default     = "West Europe"
+}
+
 variable "username" {
   description = "User name"
 

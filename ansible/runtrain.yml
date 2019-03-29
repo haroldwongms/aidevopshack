@@ -37,7 +37,7 @@
         force: yes
 
     - name: Run train.py script to generate PKL file
-      command: "/data/anaconda/envs/py35/bin/python ds_artifacts/train.py" 
+      command: "{{ python_interpreter }}/ds_artifacts/train.py" 
       args:
         chdir: "/home/{{ admin_username }}/repo"
 

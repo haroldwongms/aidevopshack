@@ -43,7 +43,7 @@ variable "username" {
   default="aidevops"
 }
 
-variable "ARM_CLIENT_ID" {
+variable "client_id" {
   description = "ARM_CLIENT_ID"
 }
 

@@ -10,6 +10,7 @@ resource "azurerm_resource_group" "example" {
 }
 
 
+
 resource "random_string" "password" {
   length = 32
   special = false

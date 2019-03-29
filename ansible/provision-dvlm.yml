@@ -3,6 +3,15 @@
   connection: local
 
   tasks:
+
+  - name: Determine Date/Time stamp
+    command: "date +%m%d%H%S"
+    register: dateoutput
+
+  - name: Setting Date/Time stamp to a variable
+    set_fact:
+      datestamp: "{{ dateoutput.stdout }}"
+
   - name: Make sure Deep Learning VM Resource Group Exists
     azure_rm_resourcegroup:
       name: "{{ resource_group }}"
@@ -26,7 +35,7 @@
       resource_group: "{{ resource_group }}"
       name: "{{ vm_name }}-pip"
       allocation_method: Static
-      domain_name: "{{ vm_name }}-{{ lookup('env', 'USER') }}"
+      domain_name: "{{ vm_name }}-{{ datestamp }}"
 
   - name: Create Deep Learning VM NSG
     azure_rm_securitygroup:

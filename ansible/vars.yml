@@ -7,5 +7,7 @@ admin_username: aihack
 dlvm_size: Standard_NC6
 k8s_vm_size: Standard_D2_v2
 k8s_vm_count: 3
-python_interpreter: /data/anaconda/envs/py35/bin/python
 git_repo: https://github.com/haroldwongms/aidevopshack
+git_user: haroldwongms
+git_token: 9f2537b9fc5738263a572b1807d84217c4792367
+

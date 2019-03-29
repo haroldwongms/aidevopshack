@@ -14,8 +14,8 @@ def test_pkl_file_loads():
     try:
         with open(pkl_file, 'rb') as f:
             model = pickle.load(f)
-    except:
-        pytest.fail("Unexpected error thrown when trying to open the .pkl file")
+    except Exception:
+        pytest.fail(Exception)
 
 # def test_accuracy_is_greater_than_eighty_percent():
 #     val_data = np.load('ds_artifacts/val_set.npz')

@@ -5,7 +5,7 @@ import numpy as np
 
 passed = True
 
-pkl_file = 'ds_artifacts/fake.pkl'
+pkl_file = './ds_artifacts/fake.pkl'
 
 model = None
 

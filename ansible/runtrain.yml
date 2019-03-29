@@ -1,4 +1,3 @@
-#
 - name: Determine IP address of provisioned DLVM
   hosts: localhost
   connection: local
@@ -38,21 +37,43 @@
         force: yes
 
     - name: Run train.py script to generate PKL file
-      command: "{{ python_interpreter }}/ds_artifacts/train.py" 
+      command: "/data/anaconda/envs/py35/bin/python ds_artifacts/train.py" 
       args:
         chdir: "/home/{{ admin_username }}/repo"
 
-- name: Copy generated PKL files from DLVM to local directory in ADO
+- name: Copy generated PKL files from DLVM to local directory in ADO and push to GitHub
   hosts: localhost
   connection: local
   tasks:
 
-    - name: Create directory 'pkl-output' for resulting PKL files to be copied 
-      file:
-        path: "/home/{{ lookup('env', 'USER') }}/pkl-output"
-        state: directory
-        owner: "{{ lookup('env', 'USER') }}"
-        group: "{{ lookup('env', 'USER') }}"
+    - name: Determine Date/Time stamp
+      command: "date +%Y%m%d%H%M%S"
+      register: dateoutput
+
+    - name: Setting Date/Time stamp to a variable
+      set_fact:
+        datestamp: "{{ dateoutput.stdout }}"
 
     - name: "Copying all PKL files generated on DLVM to the output directory 'pkl-output'"
-      command: "scp -v {{ admin_username }}@{{ dlvm_ip }}:/home/{{ admin_username }}/repo/ds_artifacts/*.pkl /home/{{ lookup('env', 'USER') }}/pkl-output"
+      command: "scp -v {{ admin_username }}@{{ dlvm_ip }}:/home/{{ admin_username }}/repo/ds_artifacts/*.pkl {{ lookup('env', 'WORKING_DIR') }}/ds_artifacts"
+
+    - name: "Adding all PKL files to GitHub payload"
+      command: "git add *.pkl"
+      args:
+        chdir: "{{ lookup('env', 'WORKING_DIR') }}/ds_artifacts"
+
+    - name: "Committing all PKL files to GitHub repository"
+      command: "git commit -m 'PKL files generated {{ datestamp }}'"
+      args:
+        chdir: "{{ lookup('env', 'WORKING_DIR') }}
+
+    - name: "Setting GitHub credentials"
+      command: "git remote set-url origin https://{{ git_user }}:{{ git_token }}@github.com/{{ git_user }}/aidevopshack"
+      args:
+        chdir: "{{ lookup('env', 'WORKING_DIR') }}
+
+    - name: "Pushing PKL files to GitHub repository"
+      command: "git push origin master
+      args:
+        chdir: "{{ lookup('env', 'WORKING_DIR') }}"
+

@@ -1,11 +1,7 @@
-variable "resource_group_name" {
-    description = "Existing resource group name to host AKS cluster"
-    default = "aidevopshack"
-}
 
 variable "location" {
     description = "Location of the resource group"
-    default = "centralus"
+    default = "southcentralus"
 }
 
 variable "vm_size" {
@@ -15,23 +11,8 @@ variable "vm_size" {
 
 variable "prefix" {
     description = "String prefix"
-    default = "aidevopshack"
+    default = "aidevopshackraj"
 }
-variable "agent_count" {
-    description = "Number of VM agents nodes."
-    default = "3"
-}
-
-variable "log_analytics_sku" {
-    description = "SKU of the log analytics workspace."
-    default = "PerGB2018"
-}
-
-variable "log_analytics_retention_days" {
-    description = "Log analytics workspace retention days."
-    default = "30"
-}
-
 
 variable "password" {
   description = "User password"
@@ -53,10 +34,6 @@ variable "ARM_TENANT_ID" {
   description = "The Azure Tenant ID."
 }
 
-variable "AZURE_REGION" {
-  description = "The Azure region to create things in."
-  default     = "West Europe"
-}
 
 variable "username" {
   description = "User name"

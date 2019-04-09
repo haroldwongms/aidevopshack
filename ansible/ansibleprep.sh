@@ -36,3 +36,6 @@ az account show
 
 # Generate ssh key for VM creation
 ssh-keygen -f ~/.ssh/id_rsa -t rsa -N ''
+
+sed -i -e "s/^#host_key_checking = False/host_key_checking = False/" /etc/ansible/ansible.cfg
+

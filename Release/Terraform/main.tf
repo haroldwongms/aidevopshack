@@ -35,24 +35,27 @@ resource "random_string" "password" {
   }
 }
 
-resource "azuread_application" "example" {
-  name = "${var.prefix}-azureadapp"
-  # homepage = "https://terra.from"
-  # identifier_uris = ["https://terra.from"]
-  # reply_urls = ["https://terra.from"]
-  available_to_other_tenants = false
-  oauth2_allow_implicit_flow = false
-}
+# No need as we will pass down service principal information from ADO task. 
 
-resource "azuread_service_principal" "example" {
-  application_id = "${azuread_application.example.application_id}"
-}
 
-resource "azuread_service_principal_password" "example" {
-  service_principal_id = "${azuread_service_principal.example.id}"
-  value = "${random_string.password.result}"
-  end_date = "2020-01-01T01:02:03Z"
-}
+# resource "azuread_application" "example" {
+#   name = "${var.prefix}-azureadapp"
+#   # homepage = "https://terra.from"
+#   # identifier_uris = ["https://terra.from"]
+#   # reply_urls = ["https://terra.from"]
+#   available_to_other_tenants = false
+#   oauth2_allow_implicit_flow = false
+# }
+
+# resource "azuread_service_principal" "example" {
+#   application_id = "${azuread_application.example.application_id}"
+# }
+
+# resource "azuread_service_principal_password" "example" {
+#   service_principal_id = "${azuread_service_principal.example.id}"
+#   value = "${random_string.password.result}"
+#   end_date = "2020-01-01T01:02:03Z"
+# }
 
 
 resource "azurerm_kubernetes_cluster" "example" {
@@ -85,4 +88,4 @@ resource "azurerm_container_registry" "acr" {
   location                 = "${azurerm_resource_group.example.location}"
   sku                      = "Basic"
   admin_enabled            = false
-}
+}s

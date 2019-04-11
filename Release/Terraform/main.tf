@@ -88,4 +88,4 @@ resource "azurerm_container_registry" "acr" {
   location                 = "${azurerm_resource_group.example.location}"
   sku                      = "Basic"
   admin_enabled            = false
-}s
+}

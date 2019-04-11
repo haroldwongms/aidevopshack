@@ -9,7 +9,7 @@ sudo apt-get update && sudo apt-get install -y libssl-dev libffi-dev python-dev 
 sudo pip install ansible
 
 sudo mkdir /etc/ansible
-cat > /etc/ansible/ansible.cfg << EOF
+sudo cat > /etc/ansible/ansible.cfg << EOF
 host_key_checking = False
 EOF
 

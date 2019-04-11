@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export WORKING_DIR=$WORKING_DIR
+export ANSIBLE_HOST_KEY_CHECKING=False
 
 ## Install pre-requisite packages
 sudo apt-get remove --purge ansible
@@ -8,10 +9,6 @@ sudo apt-get install -y python-setuptools
 sudo apt-get update && sudo apt-get install -y libssl-dev libffi-dev python-dev python-pip 
 sudo pip install ansible
 
-sudo mkdir /etc/ansible
-sudo cat > /etc/ansible/ansible.cfg << EOF
-host_key_checking = False
-EOF
 
 #sudo sed -i -e "s/^#host_key_checking = False/host_key_checking = False/" /etc/ansible/ansible.cfg
 

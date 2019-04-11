@@ -10,6 +10,7 @@ sudo pip install ansible
 
 # sudo mkdir /etc/ansible
 sudo cat > ~/.ansible.cfg << EOF
+[defaults]
 host_key_checking = False
 EOF
 

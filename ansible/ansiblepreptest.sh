@@ -8,8 +8,8 @@ sudo apt-get install -y python-setuptools
 sudo apt-get update && sudo apt-get install -y libssl-dev libffi-dev python-dev python-pip 
 sudo pip install ansible
 
-sudo mkdir /etc/ansible
-sudo cat > /etc/ansible/ansible.cfg << EOF
+# sudo mkdir /etc/ansible
+sudo cat > ~/.ansible.cfg << EOF
 host_key_checking = False
 EOF
 
